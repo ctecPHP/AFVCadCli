@@ -1,34 +1,3 @@
-<?php
-
-    define('DB_HOST'        , "DESKTOP-0DD5KKR\SQLSERVER");
-    define('DB_USER'        , "sa");
-    define('DB_PASSWORD'    , "adeade4522");
-    define('DB_NAME'        , "P12");
-    define('DB_DRIVER'      , "sqlsrv");
-   
-    require_once "Class/Conexao.php";
-   
-    try
-    {
-   
-        $Conexao    = Conexao::getConnection();
-
-        $sql  = "SELECT E4_CODIGO, E4_DESCRI ";
-        $sql .= "FROM SE4010 WHERE E4_TIPO = '1' ";
-        $sql .= "AND E4_CODIGO <> '093' ";
-        $sql .= "AND D_E_L_E_T_ = '' " ;
-
-        $query       = $Conexao->query($sql);
-        $condPgtos   = $query->fetchAll();
-   
-    }
-    catch(Exception $e)
-    {
-        echo $e->getMessage();
-        exit;
-    }    
-    
-?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -49,6 +18,7 @@
 
     <script type="text/javascript" src="./js/copyEndFat.js"></script> 
     <script src="./js/jquery.maskedinput-1.1.4.pack.js" type="text/javascript"></script>
+    <script src="text/javascript" src="./js/afv-min.js"></script>
     <!--<script src="./js/jquery.markMoney.js" type="text/javascript"></script>    -->
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/navbar-fixed/">
@@ -70,18 +40,90 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,500,700" />
 
-  <!--
-    <script type="text/javascript">
-        $("#limitecred").maskMoney({symbol:'R$ ', thousands:'.', decimal:',', symbolStay: true});
-    </script>
-   -->
+    <script language="javascript">   
+        function moeda(a, e, r, t) {
+            let n = ""
+              , h = j = 0
+              , u = tamanho2 = 0
+              , l = ajd2 = ""
+              , o = window.Event ? t.which : t.keyCode;
+            if (13 == o || 8 == o)
+                return !0;
+            if (n = String.fromCharCode(o),
+            -1 == "0123456789".indexOf(n))
+                return !1;
+            for (u = a.value.length,
+            h = 0; h < u && ("0" == a.value.charAt(h) || a.value.charAt(h) == r); h++)
+                ;
+            for (l = ""; h < u; h++)
+                -1 != "0123456789".indexOf(a.value.charAt(h)) && (l += a.value.charAt(h));
+            if (l += n,
+            0 == (u = l.length) && (a.value = ""),
+            1 == u && (a.value = "0" + r + "0" + l),
+            2 == u && (a.value = "0" + r + l),
+            u > 2) {
+                for (ajd2 = "",
+                j = 0,
+                h = u - 3; h >= 0; h--)
+                    3 == j && (ajd2 += e,
+                    j = 0),
+                    ajd2 += l.charAt(h),
+                    j++;
+                for (a.value = "",
+                tamanho2 = ajd2.length,
+                h = tamanho2 - 1; h >= 0; h--)
+                    a.value += ajd2.charAt(h);
+                a.value += r + l.substr(u - 2, u)
+            }
+            return !1
+        }
+         </script>  
+
+
+<script type="text/javascript">
+
+    function somenteNumeros(num) {
+        var er = /[^0-9]/;
+        er.lastIndex = 0;
+        var campo = num;
+        if (er.test(campo.value)) {
+          campo.value = "";
+        }
+    }
+
+    function reloadForm() {
+        location.reload();
+    }
+
+</script>
+
+
 
  <script type="text/javascript">
 	$(document).ready(function(){
 
-        /*Desliga campos*/
+        /* Desliga campos do tipo select ou textarea */
         $("#condpgto").prop('disabled', true);
         $("#formapgto").prop('disabled', true);
+        $('#redeCliente').prop('disabled', true);
+        $('#AssocCliente').prop('disabled', true);
+        $('#obs1').prop('disabled', true);
+        $('#obs2').prop('disabled', true);
+        $('#obs3').prop('disabled', true);
+        $('#obs4').prop('disabled', true);
+        $('#tipoFrete').prop('disabled', true);
+        $('#tipoCarga').prop('disabled', true);
+        $('#tipoCarro').prop('disabled', true);
+        $('#entrega_agenda').prop('disabled', true);
+        $('#CobTaxDesc').prop('disabled', true);
+
+        $('#btnFiles').prop('disabled', true);
+        $('#spanFiles').prop('disabled', true);
+        $('#btnUpload').prop('disabled', true);
+        $('#btnDelete').prop('disabled', true);
+        $('#btnCancelar').prop('disabled', true);
+        $('#btnCpFat').prop('disabled', true);
+
         $('#afvUser').focus().val($('#afvUser').val());
          
         /* Formata mascara CNPJ */
@@ -104,7 +146,7 @@
           font-size: 3.5rem;
         }
       }       
-    }
+    
     </style>  
   </head>
   <body class="top-navigation">
@@ -242,7 +284,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label for="">Contato*</label>
+                        <label for="">Comprador*</label>
                         <input type="text" class="form-control" id="contato" readonly="readonly">
                     </div>
                 </div>
@@ -257,28 +299,28 @@
                 <div class="col-sm-1">
                     <div class="form-group">
                         <label for="">DDD*</label>
-                        <input type="text" class="form-control" id="dddfone" readonly="readonly">                        
+                        <input type="text" class="form-control" id="dddfone" readonly="readonly" onkeyup="somenteNumeros(this);">                        
                     </div>
                 </div>
                 <div class="col-sm">
                         <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="">Telefone*</label>
-                                    <input type="text" class="form-control" id="telefone" readonly="readonly">                        
+                                    <input type="text" class="form-control" id="telefone" readonly="readonly" onkeyup="somenteNumeros(this);">                        
                                 </div>
                         </div>
                 </div>
                 <div class="col-sm-1">
                         <div class="form-group">
                             <label for="">DDD</label>
-                            <input type="text" class="form-control" id="dddcel" readonly="readonly">                        
+                            <input type="text" class="form-control" id="dddcel" readonly="readonly" onkeyup="somenteNumeros(this);">                        
                         </div>
                     </div>
                     <div class="col-sm">
                             <div class="col-sm-2">
                                     <div class="form-group">
                                         <label for="">Celular</label>
-                                        <input type="text" class="form-control" id="cel" readonly="readonly">                        
+                                        <input type="text" class="form-control" id="cel" readonly="readonly" onkeyup="somenteNumeros(this);">                        
                                     </div>
                             </div>
                     </div>
@@ -288,37 +330,57 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="">Forma de Pagamento*</label>
-                        <select class="form-control cbfiltro" id="formapgto" readonly="readonly">
+                        <select class="form-control cbfiltro" id="formapgto">
                             <!--<option value="C">Carteira</option>-->
-                            <option value="B">Boleto</option>
                             <option value="D">Deposito</option>
-                            <option value="H">Cheque</option>
+                            <option value="B">Boleto</option>
+                       
                         </select>
                    </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="">Condição de Pagamento*</label>
-                        <select class="form-control cbfiltro" id="condpgto" readonly="readonly">
-
-                          <?php
-                               /* Popula Combo forma de pagamento */
-                               foreach($condPgtos as $condPgto) 
-                               {
-                                   echo "<option value ='" . $condPgto['E4_CODIGO'] . "'>" . $condPgto['E4_DESCRI'] . '</option>';
-                               }
-                          ?>
-
+                        <select class="form-control cbfiltro" id="condpgto">
                         </select>
                    </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="">Limite de Crédito Sugerido*</label>
-                        <input type="text" class="form-control" id="limitecred" readonly="readonly">            
+                        <label for="">Limite de Crédito Sugerido R$ *</label>
+                        <input type="text" class="form-control" id="limitecred" readonly="readonly" onKeyPress="return(moeda(this,'.',',',event))">            
                    </div>
                 </div>
-            </div>    
+            </div>
+            
+            <div class="row">
+                      <div class="col-sm-3">
+                            <div class="form-group">
+                                    <label for="">Pertence a Rede*</label>
+                                    <select class="form-control cbfiltro" id="redeCliente">
+                                        <option value="S">Sim</option>
+                                        <option value="N" selected>Não</option>
+                                    </select>                                        
+                            </div>                    
+                       </div>            
+                        <div class="col-sm-3">
+                                <div class="form-group">
+                                        <label for="">Pertence a Associação*</label>
+                                        <select class="form-control cbfiltro" id="AssocCliente">                      
+                                            <option value="S">Sim</option>
+                                            <option value="N"selected >Não</option>
+                                        </select>                                        
+                                </div>                    
+                        </div>                        
+            </div>
+            <div class="row">
+                    <div class="col-sm-03">
+                            <div class="form-group">
+                              <label for="">Observações</label>
+                              <textarea class="form-control" name="" id="obs1" rows="4"></textarea>
+                            </div>                            
+                        </div>
+            </div>
             <div class="row">                    
                     <div class="col-sm-2">
                             <div class="form-group">
@@ -412,10 +474,32 @@
                                 </div>        
                         </div>
                 </div>
+                <div class="col-sm-1">
+                        <div class="form-group">
+                            <label for="">DDD*</label>
+                            <input type="text" class="form-control" id="dddfonefat" readonly="readonly" onkeyup="somenteNumeros(this);">                        
+                        </div>
+                </div>
+                 <div class="col-sm">
+                            <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label for="">Telefone*</label>
+                                        <input type="text" class="form-control" id="telefonefat" readonly="readonly" onkeyup="somenteNumeros(this);">                        
+                                    </div>
+                            </div>
+                   </div>                
+            </div>
+            <div class="row">
+                    <div class="col-sm-03">
+                            <div class="form-group">
+                              <label for="">Observações Faturamento</label>
+                              <textarea class="form-control" name="" id="obs2" rows="4"></textarea>
+                            </div>                            
+                        </div>
             </div>           
             <div class="row">                    
                     <div class="col-sm">
-                            <button type="button" class="btn btn-primary" onclick="CopyEndFat()">Copiar endereço de faturamento</button>
+                            <button type="button" id ="btnCpFat" class="btn btn-primary" onclick="CopyEndFat()">Copiar endereço de faturamento</button>
                    </div>
             </div>
             <div class="row">    
@@ -469,7 +553,29 @@
                                 </div>        
                         </div>
                 </div>
+                   <div class="col-sm-1">
+                        <div class="form-group">
+                            <label for="">DDD*</label>
+                            <input type="text" class="form-control" id="dddfonecob" readonly="readonly" onkeyup="somenteNumeros(this);">                        
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                            <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label for="">Telefone*</label>
+                                        <input type="text" class="form-control" id="telefonecob" readonly="readonly" onkeyup="somenteNumeros(this);">                        
+                                    </div>
+                            </div>
+                   </div>
             </div>
+            <div class="row">
+                    <div class="col-sm-03">
+                            <div class="form-group">
+                              <label for="">Observações de Cobrança</label>
+                              <textarea class="form-control" name="" id="obs3" rows="4"></textarea>
+                            </div>                            
+                        </div>
+            </div>  
             <div class="row">
                     <div class="col-sm">&nbsp;</div>
             </div>
@@ -520,25 +626,139 @@
                                         <input type="text" class="form-control" id="bairroent" readonly="readonly">
                                 </div>        
                         </div>
+                </div> 
+                <div class="col-sm-1">
+                        <div class="form-group">
+                            <label for="">DDD*</label>
+                            <input type="text" class="form-control" id="dddfoneent" readonly="readonly" onkeyup="somenteNumeros(this);">                        
+                        </div>
                 </div>
+                 <div class="col-sm">
+                            <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label for="">Telefone*</label>
+                                        <input type="text" class="form-control" id="telefoneent" readonly="readonly" onkeyup="somenteNumeros(this);">                        
+                                    </div>
+                            </div>
+                   </div>
+                </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                      <label for="">Responsável Recebimento</label>
+                      <input type="text" name="" id="respReceb" class="form-control" placeholder="" aria-describedby="helpId" readonly="readonly">                      
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                        <div class="form-group">
+                          <label for="">Tipo Frete*</label>
+                          <select class="form-control" name="" id="tipoFrete">
+                            <option value="">Selecione..</option>   
+                            <option value='C'>CIF</option>
+                            <option value='F'>FOB</option>
+                          </select>
+                        </div>        
+                    </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                      <label for="">Tipo de Carga*</label>
+                      <select class="form-control" name="" id="tipoCarga">
+                        <option value="">Selecione..</option>   
+                        <option value='2'>Batida</option>
+                        <option value='1'>Paletizada</option>
+                      </select>
+                    </div>        
+                </div>                
+                <div class="col-sm-3">
+                    <div class="form-group">
+                      <label for="">Tipo Veiculo*</label>       
+                        <select class="form-control" name="" id="tipoCarro">
+                          <option value="carreta">Selecione..</option>
+                          <option value="10">VAN</option>
+                          <option value="20">VUC</option>
+                          <option value="30">TOCO</option>
+                          <option value="40">TRUCK</option>
+                        </select>
+                    </div>                            
+                </div>                
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                        <div class="form-group">
+                                <label for="">Entrega Agendada*</label>       
+                                  <select class="form-control" name="" id="entrega_agenda">
+                                    <option value="">Selecione..</option>
+                                    <option value="S">Sim</option>
+                                    <option value="N">Não</option>              
+                                  </select>
+                        </div>                             
+                </div>
+                <div class="col-sm-3">
+                        <div class="form-group">
+                                <label for="">Cobra Taxa descarga*</label>       
+                                  <select class="form-control" name="" id="CobTaxDesc">
+                                    <option value="">Selecione..</option>
+                                    <option value="S">Sim</option>
+                                    <option value="N">Não</option>              
+                                  </select>
+                        </div>                             
+                </div>
+                <div class="col-sm-2">
+                        <div class="form-group">
+                                <label for="">Valor R$ *</label>       
+                                <input type="text" class="form-control" readonly="readonly" id="valDesc" onKeyPress="return(moeda(this,'.',',',event))">
+                        </div>                             
+                </div>
+                <div class="col-sm-2">
+                        <div class="form-group">
+                                <label for="">Ajudantes</label>       
+                                <input type="text" class="form-control" readonly="readonly" id="numAjudantes" onkeyup="somenteNumeros(this);">
+                        </div>                             
+                </div>
+            </div>
 
+            <div class="row">
+                    <div class="col-sm-03">
+                            <div class="form-group">
+                              <label for="">Observações Logística</label>
+                              <textarea class="form-control" name="" id="obs4" rows="4" ></textarea>
+                            </div>                            
+                        </div>
+            </div>
+            
+            <div class="row"> 
+                <div class="col-sm">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary start" id="btnSubmit" >                        
+                            <span>Gravar</span>
+                        </button>
+                        <button type="reset" class="btn btn-danger delete" id="btnCancelarCad" onclick="reloadForm()">                       
+                            <span>Cancelar</span>
+                        </button>            
+                    </div>
+                </div>
+            </div>
+
+                
                 <div class="row fileupload-buttonbar">
+                
                 <div class="col-sm-6">
+                <h3>Enviar fotos e Arquivos</h3>
                     <!-- The fileinput-button span is used to style the file input field as button -->
                     <span class="btn btn-success fileinput-button">
                         <i class="glyphicon glyphicon-plus"></i>
-                        <span>Add files...</span>
-                        <input type="file" name="files[]" multiple>           
+                        <span>Add Arquivos...</span>
+                        <input type="file" name="files[]" multiple id="btnFiles">           
                         <input type="hidden" class="form-control" name="path" id="path" placeholder="" value="">
                         
                     </span>
-                    <button type="submit" class="btn btn-primary start">                        
+                    <button type="submit" class="btn btn-primary start" id="btnUpload">                        
                         <span>Iniciar Upload</span>
                     </button>
-                    <button type="reset" class="btn btn-warning cancel">                       
+                    <button type="reset" class="btn btn-warning cancel" id="btnCancelar">                       
                         <span>Cancelar upload</span>
                     </button>            
-                    <button type="button" class="btn btn-danger delete">                       
+                    <button type="button" class="btn btn-danger delete" id="btnDelete">                       
                         <span>Delete</span>
                     </button>
                     <input type="checkbox" class="toggle">

@@ -2,20 +2,20 @@
 
 	$afvUser = $_POST['afvUser'];		
 	//$afvUser = 'rp212.04';		
-	/*	
+		
 	define('DB_HOST'        , "192.168.0.4");
     define('DB_USER'        , "sa");
     define('DB_PASSWORD'    , "S0b3l2036");
-    define('DB_NAME'        , "AFVServer_SOBEL");
+    define('DB_NAME'        , "AFVServer_SOBEL_PRD");
     define('DB_DRIVER'      , "sqlsrv");
-    */
-			
+    
+    /*			
 	define('DB_HOST'        , "DESKTOP-0DD5KKR\SQLSERVER");
     define('DB_USER'        , "sa");
     define('DB_PASSWORD'    , "adeade4522");
     define('DB_NAME'        , "AFVServer");
 	define('DB_DRIVER'      , "sqlsrv");
-	
+	*/
 	require_once "../Class/Conexao.php";
 		
 	try

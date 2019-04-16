@@ -14,12 +14,11 @@ $(document).ready(function() {
             url: "https://sintegraws.com.br/api/v1/execute-api.php?token="+token+"&cnpj="+cnpj+"&plugin="+ plugin,
             method:'GET',
             complete: function(xhr){
-          
+              $('#dddfone').prop('readonly', false);
               // Aqui recuperamos o JSON retornado
               response = xhr.responseJSON;
               
-              if(response.status == 'OK') {
-              
+              if(response.status == 'OK') {   
                 // Agora preenchemos os campos com os valores retornados
                 $('#razaosocial').val(response.nome_empresarial);  
                 $('#fantasia').val(response.nome_fantasia);  
@@ -39,6 +38,10 @@ $(document).ready(function() {
 
                 $('#situacao_cnpj').val(response.situacao_cnpj);
                 $('#situacao_ie').val(response.situacao_ie);
+
+                if ($('#fantasia').val() == 'Não informado') {
+                    $('#fantasia').val($('#razaosocial').val());
+                }
                 
                 //buscar código ibge aqui
                  //Consulta o webservice viacep.com.br/
@@ -48,8 +51,10 @@ $(document).ready(function() {
                  return false;
 
               } else {
-                $('#cnpj').focus().val($('#cnpj').val());
-                $("#cnpj").val("CNPJ-Inválido");     
+                //$('#cnpj').focus().val($('#cnpj').val());
+                $('#Modal').modal('show');
+                $('#erro').replaceWith('<h4>Falha de comunição com sintegra WS.</h4>')
+                $('#cnpj').focus().val($('#cnpj').val());                
               }
             }
           });

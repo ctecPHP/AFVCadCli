@@ -6,7 +6,8 @@ $(document).ready(function() {
                 $("#enderecofat").val("");
                 $("#bairrofat").val("");
                 $("#cidadefat").val("");
-                $("#estadofat").val("");
+                $("#estadofat").val("");   
+                $("#complefat").val("");             
                 $("#ibge").val("");
             }
             
@@ -30,7 +31,8 @@ $(document).ready(function() {
                         $("#bairrofat").val("...");
                         $("#cidadefat").val("...");
                         $("#estadofat").val("...");
-                        $("#ibge").val("...");
+                        $("#complefat").val("");             
+                        $("#ibge").val("");
 
                         //Consulta o webservice viacep.com.br/
                         $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
@@ -42,6 +44,7 @@ $(document).ready(function() {
                                 $("#cidadefat").val(dados.localidade);
                                 $("#estadofat").val(dados.uf);
                                 $("#numerofat").val("");
+                                $("#complefat").val("");
                                 $("#ibge").val(dados.ibge);
                             } //end if.
                             else {
@@ -83,6 +86,7 @@ $(document).ready(function() {
                         $("#bairroent").val("...");
                         $("#cidadeent").val("...");
                         $("#estadoent").val("...");
+                        $("#compleent").val("");             
                         //$("#ibge").val("...");
 
                         //Consulta o webservice viacep.com.br/
@@ -95,6 +99,7 @@ $(document).ready(function() {
                                 $("#cidadeent").val(dados.localidade);
                                 $("#estadoent").val(dados.uf);
                                 $("#numeroent").val("");
+                                $("#compleent").val("");             
                                // $("#ibge").val(dados.ibge);
                             } //end if.
                             else {
@@ -136,6 +141,7 @@ $(document).ready(function() {
                         $("#bairrocob").val("...");
                         $("#cidadecob").val("...");
                         $("#estadocob").val("...");
+                        $("#complecob").val(" ");             
                        // $("#ibge").val("...");
 
                         //Consulta o webservice viacep.com.br/
@@ -148,6 +154,7 @@ $(document).ready(function() {
                                 $("#cidadecob").val(dados.localidade);
                                 $("#estadocob").val(dados.uf);
                                 $("#numerocob").val("");
+                                $("#complecob").val("");             
                             //    $("#ibge").val(dados.ibge);
                             } //end if.
                             else {
